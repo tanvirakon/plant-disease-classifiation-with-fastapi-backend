@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Tooling / IDE
+.claude/
+.idea/
+.vscode/
+.tools/
+*.swp
+.DS_Store
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Dataset (kept locally, not pushed)
+plantvill/
