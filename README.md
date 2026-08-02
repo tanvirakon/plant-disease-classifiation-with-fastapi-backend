@@ -8,7 +8,6 @@ FastAPI service for classifying plant leaf images with a trained PyTorch model.
 - `model.py` - CNN model definition
 - `best_model.pth` - trained model weights
 - `class_names.json` - class label mapping used by inference
-- `plantvill/` - dataset organized by class folders
 - `plant-project-codebasics.ipynb` - training notebook
 
 ## Requirements
@@ -28,7 +27,7 @@ FastAPI service for classifying plant leaf images with a trained PyTorch model.
 3. Start the API:
 
 ```bash
-uvicorn run:app --host localhost --port 8000
+uvicorn run:app --reload
 ```
 
 Or run the script directly:
@@ -39,8 +38,8 @@ python run.py
 
 ## Endpoints
 
-- `GET /ping` - health check
-- `POST /predict` - upload an image file and receive the predicted class and confidence
+- `localhost:8000/ping` - health check
+- go to`localhost:8000/docs` first - upload an image file and receive the predicted class and confidence
 
 ## Notes
 
