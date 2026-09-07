@@ -22,3 +22,6 @@ env/
 
 # Dataset (kept locally, not pushed)
 plantvill/
+
+# Logs
+*.log

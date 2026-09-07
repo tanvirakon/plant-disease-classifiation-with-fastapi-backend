@@ -1,3 +1,4 @@
+# bckend
 import io
 import json
 import torch
@@ -8,20 +9,23 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 from model import PlantVillageCNN
+import torch.nn.functional as F
 
 app = FastAPI()
 
+
+# the frontend addresses allowed to access the FastAPI backend
 origins = [
     "http://localhost",
     "http://localhost:3000",
 ]
 
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    CORSMiddleware,  # enables cross-origin requests.
+    allow_origins=origins,  # only the listed frontend addresses may connect.
+    allow_credentials=True,  # allows cookies or authentication information.
+    allow_methods=["*"],  # allows all HTTP methods, such as GET and POST.
+    allow_headers=["*"],  # allows all request headers
 )
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -57,14 +61,16 @@ async def predict(file: UploadFile = File(...)):
 
     with torch.no_grad():
         outputs = model(img_batch)
-        probabilities = torch.nn.functional.softmax(outputs, dim=1)
-        confidence, predicted_idx = torch.max(probabilities, 1)
+        probabilities = F.softmax(outputs, dim=1)
+        confidence, predicted_idx = torch.max(probabilities, dim=1)
 
-    return {
+    result = {
         "class": CLASS_NAMES[predicted_idx.item()],
         "confidence": float(confidence.item()),
     }
+    # print(result)
+    return result  # <-- you also need a return statement
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(app, host="localhost", port=8000)  # backend
